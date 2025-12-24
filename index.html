@@ -1,0 +1,371 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+<title>Goldmine</title>  
+    <!-- Add this meta tag to prevent ngrok warning -->
+    <meta name="ngrok-skip-browser-warning" content="true">
+    
+    <!-- Your existing code continues... -->
+    <title>My Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script<style>  
+/* --- BODY AND BACKGROUND --- */  
+body {  
+  margin: 0;  
+  font-family: "Poppins", sans-serif;  
+  background: linear-gradient(135deg, #0f0f1f, #1a1f2e, #0f0f1f);  
+  color: #e0e0e0;  
+  background-size: 400% 400%;  
+  animation: gradientBG 20s ease infinite;  
+}  
+@keyframes gradientBG {  
+  0% { background-position: 0% 50%; }  
+  50% { background-position: 100% 50%; }  
+  100% { background-position: 0% 50%; }  
+}
+
+/* --- HEADER --- */
+header {
+background: linear-gradient(90deg, #0d1b3a, #1a3b6b);
+color: #ffffff;
+text-align: center;
+padding: 1.2rem 0;
+font-size: 2.2rem;
+font-weight: 800;
+box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
+border-bottom: 2px solid #2e4a86;
+}
+
+/* --- NAV --- */
+nav {
+display: flex;
+justify-content: space-around;
+background: #121921;
+padding: 14px;
+position: sticky;
+bottom: 0;
+border-top: 2px solid #2e4a86;
+}
+nav button {
+background: #2e4a86;
+color: white;
+border: none;
+padding: 12px 28px;
+border-radius: 14px;
+cursor: pointer;
+font-weight: 600;
+transition: 0.4s;
+}
+nav button:hover {
+background: #4facfe;
+box-shadow: 0 0 12px #4facfe;
+}
+
+/* --- CARDS --- */
+.card {
+background: rgba(255, 255, 255, 0.95);
+color: #0d1117;
+border-radius: 15px;
+padding: 20px;
+margin: 12px 0;
+box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+transform: translateY(-6px);
+box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+}
+
+/* --- BUTTONS --- */
+.btn {
+background: linear-gradient(90deg, #4facfe, #00f2fe);
+color: #0d1117;
+border: none;
+padding: 16px 20px;
+border-radius: 30px;
+cursor: pointer;
+margin: 9px 28px 0 0;
+font-weight: 600;
+transition: 0.4s;
+}
+.btn:hover {
+background: linear-gradient(90deg, #00f2fe, #4facfe);
+box-shadow: 0 0 15px #4facfe;
+}
+
+/* --- BACK BUTTON --- */
+.back {
+background: #ff9f1c;
+display: inline-block;
+padding: 10px 22px;
+border-radius: 20px;
+color: #fff;
+border: none;
+cursor: pointer;
+margin-bottom: 12px;
+transition: 0.3s;
+}
+.back:hover {
+box-shadow: 0 0 12px #ff9f1c;
+transform: translateY(-2px);
+}
+
+/* --- VIP CARD --- */
+.vip-card {
+border: 2px solid #4facfe;
+border-radius: 12px;
+padding: 18px;
+margin-bottom: 12px;
+position: relative;
+background: linear-gradient(145deg, #f9f9f9, #e0e0e0);
+color: #0d1117;
+animation: vipPulse 4s ease-in-out infinite alternate;
+}
+.vip-card.locked::after {
+content: "🔒 Locked";
+position: absolute;
+top: 12px;
+right: 10px;
+font-weight: bold;
+color: #ff4d4f;
+}
+@keyframes vipPulse {
+0% { box-shadow: 0 0 8px #4facfe; }
+50% { box-shadow: 0 0 18px #4facfe; }
+100% { box-shadow: 0 0 8px #4facfe; }
+}
+
+/* --- INPUTS --- */
+input[type="number"], input[type="text"], select {
+width: calc(100% - 20px);
+padding: 10px;
+margin-top: 10px;
+border-radius: 8px;
+border: 1px solid #4facfe;
+background: #f5f5f5;
+color: #0d1117;
+display:block;
+}
+
+/* --- FILE INPUT --- */
+input[type="file"] { margin-top: 10px; }
+
+/* --- TEXT --- */
+.small { font-size: 0.9rem; color: #555; }
+.attention { color: #ff4d4f; font-weight: bold; margin-top: 12px; }
+.tip { font-size: 0.85rem; color: #888; margin-top: 8px; }
+
+/* --- ANIMATION SECTIONS --- */
+section { display: none; padding: 16px; animation: fadeIn 0.25s ease; }
+section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+
+<link rel="me" href="https://www.blogger.com/profile/01840354240888706203" />
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+</head>  
+<body>  
+<header>Goldmine</header>  
+
+<!-- HOME -->
+<section id="home" class="active">  
+<div class="card">  
+<h2>ID #<span id="userId"></span></h2>  
+<p><strong>Balance:</strong> <span id="balance">50</span> Birr</p>  
+<p>Level - VIP 0 <span style="color:green">🎫</span></p>  
+<button class="btn" onclick="openRecharge()">Recharge📥</button>  
+<button class="btn" onclick="openWithdraw()">Withdraw📤</button>  
+</div>  
+
+<div class="card">  
+<h3>VIP Status</h3>  
+<p>Active VIP; - Recharge and activate a VIP status : <span style="color:red">● not working</span></p>  
+<p><strong>Total Earnings:</strong> <span id="totalEarnings">0</span> Birr</p>  
+<p><strong>Daily Income:</strong> 0 Birr</p>  
+<p><strong>Expire Date:</strong> -</p>  
+</div>  
+
+<div class="card">  
+<h3>About Us</h3>  
+<p class="small">Goldmine was founded in 1834 as the Gold Bank of Swizerland and has a rich history of innovation, international expansion, and banking excellence.</p>  
+</div>  
+</section>
+
+<!-- VIP -->
+<section id="vip">  
+<h2>VIP Products</h2>  
+<div class="vip-card card"><h3>Gold VIP 1</h3><p>Price: 500 Birr</p><p>Daily Income: 150 Birr</p><p>Duration: 40 days</p><p>Total Income: 6,000 Birr</p><button class="btn" onclick="mockbuynow()">📦 BUY PRODUCT</button></div>
+<div class="vip-card card"><h3>Gold VIP 2</h3><p>Price: 2,000 Birr</p><p>Daily Income: 600 Birr</p><p>Duration: 40 days</p><p>Total Income: 24,000 Birr</p><button class="btn" onclick="mockbuynow()">📦 BUY PRODUCT</button></div>
+<div class="vip-card card"><h3>Gold VIP 3</h3><p>Price: 5,000 Birr</p><p>Daily Income: 1,500 Birr</p><p>Duration: 40 days</p><p>Total Income: 60,000 Birr</p><button class="btn" onclick="mockbuynow()">📦 BUY PRODUCT</button></div>
+<div class="vip-card card"><h3>Gold VIP 4</h3><p>Price: 10,000 Birr</p><p>Daily Income: 3,000 Birr</p><p>Duration: 40 days</p><p>Total Income: 120,000 Birr</p><button class="btn" onclick="mockbuynow()">📦 BUY PRODUCT</button></div>
+<div class="vip-card card"><h3>Gold VIP 5</h3><p>Price: 25,000 Birr</p><p>Daily Income: 7,500 Birr</p><p>Duration: 40 days</p><p>Total Income: 300,000 Birr</p><button class="btn" onclick="mockbuynow()">📦 BUY PRODUCT</button></div>
+<div class="vip-card card"><h3>Gold VIP 6</h3><p>Price: 50,000 Birr</p><p>Daily Income: 15,000 Birr</p><p>Duration: 40 days</p><p>Total Income: 600,000 Birr</p><button class="btn" onclick="mockbuynow()">📦 BUY PRODUCT</button></div>
+<div class="vip-card card"><h3>Gold VIP 7</h3><p>Price: 100,000 Birr</p><p>Daily Income: 30,000 Birr</p><p>Duration: 40 days</p><p>Total Income: 1,200,000 Birr</p><button class="btn" onclick="mockbuynow()">📦 BUY PRODUCT</button></div>
+</section>
+
+<!-- ME -->
+<section id="me">  
+<div class="card">  
+<h2>My Profile</h2>  
+<p><strong>Total Recharge:</strong> <span id="totalRecharge">0</span> Birr</p>  
+<p><strong>Total Active VIP:</strong> 0</p>  
+<p><strong>Total Income:</strong> 50 Birr</p>  
+<p><strong>Total Withdrawal:</strong> <span id="totalWithdraw">0</span> Birr</p>  
+</div>  
+
+<div class="card">  
+<h3>About us</h3>  
+<p class="small">Began in 1834 as the Gold Bank of Swizerland. Citi Group is known for innovation, global expansion, and financial services excellence.</p>  
+</div>  
+</section>
+
+<!-- RECHARGE PAGE -->
+<section id="rechargePage">  
+<button class="back" onclick="backToHome()"> Back</button>  
+<div class="card">  
+<h2>Recharge</h2>  
+<div class="card">  
+<p><strong>Account Name:</strong> Henok</p>  
+<p><strong>Account Number:</strong> 0925512200</p>  
+<p><strong>Bank name:</strong> Telebirr</p>  
+<p class="tip">You can recharge from any bank. No fake withdrawal.</p>  
+<label>Enter Amount</label>  
+<input type="number" id="rechargeAmount" placeholder="Enter amount in Birr">  
+<button class="btn" onclick="gotoReceipt()">Submit</button>  
+<p class="attention">Attention: Upload receipt carefully. you can recharge from any bank..</p>  
+</div>  
+</section>
+
+<!-- RECEIPT UPLOAD PAGE -->
+<section id="receiptPage">  
+<button class="back" onclick="backToHome()"> Back</button>  
+<div class="card">  
+<h2>Upload Receipt</h2>  
+<p class="small">Please upload your payment receipt (image/pdf). After upload, tap Submit to confirm.</p>  
+<input type="file" id="receiptFile" accept="image/*,application/pdf"><br>  
+<button class="btn" onclick="submitReceipt()">Submit Receipt</button>  
+</div>  
+</section>
+
+<!-- WITHDRAW PAGE -->
+<section id="withdrawPage">  
+<button class="back" onclick="backToHome()"> Back</button>  
+<div class="card">  
+<h2>Withdrawal</h2>  
+<label>Enter Amount (Minimum 100 Birr)</label>  
+<input type="number" id="withdrawAmount" placeholder="100">  
+<label style="margin-top:8px;">Payment Method</label>  
+<select id="withdrawBank">  
+  <option value="">-- Select --</option>  
+  <option value="CBE">CBE</option>  
+  <option value="Telebirr">Telebirr</option>  
+  <option value="Abissinya">Abissinya</option>  
+  <option value="Awash">Awash</option>  
+</select>  
+<label>Bank Account / Phone Number</label>  
+<input type="text" id="withdrawAccount" placeholder="add account number.">  
+<button class="btn" onclick="submitWithdraw()">Submit Withdrawal</button>  
+<p class="small" style="margin-top:8px;">Minimum withdrawal is 100 Birr. Withdrawals will deduct from your balance when submitted.</p>  
+</div>  
+</section>
+
+<!-- NAV -->
+<nav id="mainNav">  
+<button onclick="showSection('home')">Home</button>  
+<button onclick="showSection('vip')">VIP</button>  
+<button onclick="showSection('me')">Me</button>  
+</nav>
+
+<script>  
+// initial values  
+const userIdEl = document.getElementById('userId');  
+const balanceEl = document.getElementById('balance');  
+const totalRechargeEl = document.getElementById('totalRecharge');  
+const totalWithdrawEl = document.getElementById('totalWithdraw');  
+
+let balance = 50;   
+let totalRecharge = 0;   
+let totalWithdraw = 0;   
+
+userIdEl.textContent = Math.floor(Math.random() * 100000);  
+updateBalanceUI();  
+
+// show section  
+function showSection(id){  
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));  
+  document.getElementById(id).classList.add('active');  
+  const nav = document.getElementById('mainNav');  
+  if (id === 'rechargePage' || id === 'receiptPage' || id === 'withdrawPage') nav.style.display = 'none';  
+  else nav.style.display = 'flex';  
+}  
+
+// open pages  
+function openRecharge(){    
+  document.getElementById('rechargeAmount').value = '';    
+  document.getElementById('receiptFile').value = '';    
+  showSection('rechargePage');    
+}  
+function openWithdraw(){    
+  document.getElementById('withdrawAmount').value = '';    
+  document.getElementById('withdrawBank').value = '';    
+  document.getElementById('withdrawAccount').value = '';    
+  showSection('withdrawPage');    
+}  
+function backToHome(){ showSection('home'); }  
+
+// Recharge flow  
+function gotoReceipt(){    
+  const v = Number(document.getElementById('rechargeAmount').value);    
+
+  // ✅ Minimum recharge rule added
+  if (!v || v < 500) { 
+    alert('Minimum recharge amount is 500 Birr.'); 
+    return; 
+  }
+
+  window.__pendingRecharge = v;    
+  showSection('receiptPage');    
+}  
+
+function submitReceipt(){    
+  const fileInput = document.getElementById('receiptFile');    
+  if (!fileInput.value) { alert('Please upload a receipt file before submitting.'); return; }    
+  alert('✅ Receipt submitted successfully. under Review wait 1-5 min.');    
+  window.__pendingRecharge = 0;    
+  fileInput.value = '';    
+  showSection('home');    
+}  
+
+// Withdraw  
+function submitWithdraw(){    
+  const amt = Number(document.getElementById('withdrawAmount').value);    
+  const bank = document.getElementById('withdrawBank').value;    
+  const acc = document.getElementById('withdrawAccount').value.trim();    
+  if (!amt || amt <= 0) { alert('Enter a valid withdrawal amount.'); return; }    
+  if (amt < 100) { alert('Minimum withdrawal is 100 Birr.'); return; }    
+  if (!bank) { alert('Please select a payment method.'); return; }    
+  if (!acc) { alert('Please enter your bank account / phone number.'); return; }    
+  if (amt > balance) { alert('Insufficient balance.'); return; }    
+  balance -= amt;    
+  totalWithdraw += amt;    
+  updateBalanceUI();    
+  alert('✅ Withdrawal submitted.\nAmount: ' + amt + ' Birr\nBank: ' + bank + '\nAccount: ' + acc);    
+  showSection('home');    
+}  
+
+function updateBalanceUI(){    
+  balanceEl.textContent = balance;    
+  totalRechargeEl.textContent = totalRecharge;    
+  totalWithdrawEl.textContent = totalWithdraw;    
+}  
+
+// mock buy  
+function mockbuynow(){ alert('⚠️ Your balance is insufficient. Please Recharge and buy this product ❗'); }  
+
+showSection('home');  
+</script>
+
+</body>  
+</html>
